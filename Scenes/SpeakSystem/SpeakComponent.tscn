@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpwc2gwvie0ha"]
+
+[ext_resource type="Script" path="res://Scripts/SpeakSystem/SpeakComponent.cs" id="1_l1v0k"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_84uhu"]
+radius = 2.47694
+
+[node name="SpeakComponent" type="Area3D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_l1v0k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_84uhu")

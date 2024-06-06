@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://de3fkrtev6sv6"]
+
+[ext_resource type="PackedScene" uid="uid://c75qx01poiibo" path="res://Scenes/PlayerInputManager.tscn" id="2_eq7qc"]
+[ext_resource type="PackedScene" uid="uid://bq2ejk4u3jj8n" path="res://Scenes/World.tscn" id="2_qhcbe"]
+[ext_resource type="PackedScene" uid="uid://bslyryy6pk76d" path="res://Scenes/TestNPC.tscn" id="2_tjuwa"]
+[ext_resource type="PackedScene" uid="uid://dblgyykm0jn8w" path="res://Scenes/Player.tscn" id="4_rpx0a"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="World" parent="." instance=ExtResource("2_qhcbe")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, 0.25, -0.433013, 0, 0.866025, 0.5, 0.5, -0.433013, 0.75, -8, 3, 4)
+
+[node name="PlayerInputManager" parent="." node_paths=PackedStringArray("playerCharacter", "world") instance=ExtResource("2_eq7qc")]
+playerCharacter = NodePath("../Player")
+world = NodePath("..")
+
+[node name="TestNPC2" parent="." instance=ExtResource("2_tjuwa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.617241, 3.00703, -4.37973)
+name = "Pepito"
+
+[node name="TestNPC" parent="." instance=ExtResource("2_tjuwa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.02081, 1.56081, -0.593517)
+name = "Juanito"
+
+[node name="Player" parent="." instance=ExtResource("4_rpx0a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27574, 1.56081, 3.59215)

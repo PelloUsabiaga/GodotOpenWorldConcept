@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://kwad7xescd70"]
+
+[ext_resource type="Script" path="res://Scripts/HumanCharacter.cs" id="1_64tp1"]
+[ext_resource type="PackedScene" uid="uid://sw1a1vv632e6" path="res://Scenes/DamageSystem/DamageComponent.tscn" id="2_38ieo"]
+[ext_resource type="PackedScene" uid="uid://dnb23wxxad1hw" path="res://Scenes/WeaponSystem/WeaponSystem.tscn" id="3_p5p7j"]
+[ext_resource type="PackedScene" uid="uid://xwkgimnk1rqs" path="res://Scenes/NavigationSystem/NavigationComponent.tscn" id="4_dspp6"]
+
+[node name="HumanCharacter" type="Node3D"]
+script = ExtResource("1_64tp1")
+
+[node name="DamageComponent" parent="." node_paths=PackedStringArray("damageableInterfaceNode") instance=ExtResource("2_38ieo")]
+damageableInterfaceNode = NodePath("..")
+
+[node name="WeaponSystem" parent="." instance=ExtResource("3_p5p7j")]
+
+[node name="NavigationComponent" parent="." node_paths=PackedStringArray("humanCharacter") instance=ExtResource("4_dspp6")]
+humanCharacter = NodePath("..")
+
+[node name="FloorRayCast" type="RayCast3D" parent="."]
+target_position = Vector3(0, -1.6, 0)

@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://bslyryy6pk76d"]
+
+[ext_resource type="Script" path="res://Scripts/TestNPC.cs" id="1_l6wuo"]
+[ext_resource type="PackedScene" uid="uid://kwad7xescd70" path="res://Scenes/HumanCharacter.tscn" id="1_l7mnr"]
+[ext_resource type="PackedScene" uid="uid://bpwc2gwvie0ha" path="res://Scenes/SpeakSystem/SpeakComponent.tscn" id="2_8m2aw"]
+[ext_resource type="PackedScene" uid="uid://nm1wyxcnm3nm" path="res://Scenes/LocalHumanAISystem/LocalHumanAI.tscn" id="4_ww25v"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5ubi6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q2wg3"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rhd1g"]
+height = 2.20859
+
+[node name="TestNPC" type="CharacterBody3D"]
+script = ExtResource("1_l6wuo")
+
+[node name="HumanCharacter" parent="." node_paths=PackedStringArray("targetCharacterBody") instance=ExtResource("1_l7mnr")]
+targetCharacterBody = NodePath("..")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="HumanCharacter"]
+mesh = SubResource("CapsuleMesh_5ubi6")
+material = SubResource("StandardMaterial3D_q2wg3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_rhd1g")
+
+[node name="SpeakComponent" parent="." node_paths=PackedStringArray("speakerInterfaceNode") instance=ExtResource("2_8m2aw")]
+speakerInterfaceNode = NodePath("../HumanCharacter")
+
+[node name="LocalHumanAI" parent="." node_paths=PackedStringArray("targetHumanCharacter") instance=ExtResource("4_ww25v")]
+targetHumanCharacter = NodePath("../HumanCharacter")
