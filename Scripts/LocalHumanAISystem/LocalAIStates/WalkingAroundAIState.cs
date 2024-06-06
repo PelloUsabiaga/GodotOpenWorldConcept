@@ -5,9 +5,9 @@ using System.Runtime.CompilerServices;
 using Godot;
 public partial class WalkingAroundAIState : LocalAIState
 {
-    private Vector3 centralPosition;
-    private float distanceOrder;
-    private LocalHumanAI localHumanAI;
+    protected Vector3 centralPosition;
+    protected float distanceOrder;
+    protected LocalHumanAI localHumanAI;
 
     private double stopTime;
     private double currentStopWaitTime;

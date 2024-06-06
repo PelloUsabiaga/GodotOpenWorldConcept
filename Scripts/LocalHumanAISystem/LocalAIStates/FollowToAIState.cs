@@ -8,7 +8,7 @@ public partial class FollowToAiState : LocalAIState
 {
     private Node3D target;
     private float distanceSquared;
-    private LocalHumanAI localHumanAI;
+    public LocalHumanAI localHumanAI { get; private set; }
 
 
     public FollowToAiState(Node3D target, float distance, LocalHumanAI localHumanAI)
