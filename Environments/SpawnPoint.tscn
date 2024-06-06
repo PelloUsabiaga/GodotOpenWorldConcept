@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgakeqs5waxk"]
+
+[ext_resource type="Script" path="res://Environments/SpawnPoint.cs" id="1_x5tfs"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vc4lk"]
+radius = 2.0
+
+[node name="SpawnPoint" type="Node3D"]
+script = ExtResource("1_x5tfs")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_vc4lk")

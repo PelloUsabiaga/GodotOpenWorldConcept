@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://xwkgimnk1rqs"]
+
+[ext_resource type="Script" path="res://HumansAndPlayer/Scripts/NavigationSystem/NavigationComponent.cs" id="1_3pc5q"]
+
+[node name="NavigationComponent" type="Node3D"]
+script = ExtResource("1_3pc5q")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+target_desired_distance = 0.1
+avoidance_enabled = true

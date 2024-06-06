@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://nm1wyxcnm3nm"]
-
-[ext_resource type="Script" path="res://Scripts/LocalHumanAISystem/LocalHumanAI.cs" id="1_lbq5n"]
-
-[node name="LocalHumanAI" type="Node3D"]
-script = ExtResource("1_lbq5n")

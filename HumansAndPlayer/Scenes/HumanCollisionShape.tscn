@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy73ty2amy3pw"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qgjok"]
+height = 2.20859
+
+[node name="HumanCollisionShape" type="CollisionShape3D"]
+shape = SubResource("CapsuleShape3D_qgjok")
