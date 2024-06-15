@@ -1,25 +1,47 @@
 using Godot;
 using System;
 
-public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterface
+public partial class HumanCharacter : Node3D, SpeakerInterface, IDamageable, ITargeteable
 {
     [Export]
     public CharacterBody3D targetCharacterBody;
     public HumanState humanState { get; private set; }
 
     public WeaponSystem weaponSystem;
+    [Signal]
+    public delegate void AttackPerformedEventHandler();
     public DamageComponent damageComponent;
     private NavigationComponent navigationComponent;
 
     public bool isWounded { get; set; }
-    public bool isDead { get; set; } = false;
+
+    private bool _isDead = false;
+    public bool isDead 
+    { 
+        get
+        {
+            return _isDead;
+        } 
+        set
+        {
+            if (value == true)
+            {
+                this.targetCharacterBody.Velocity = Vector3.Zero;
+            }
+            _isDead = value;
+        } 
+    }
     public float movementSpeed {get; set;} = 5;
     public float jumpSpeed {get; set;} = 5;
+
+    [Export]
+    public CollisionObject3D collisionObject3D { get; set; }
+
     public double jumpTime = 0.5;
     private float rotationSpeed = 5;
 
     private RayCast3D floorRayCast;
-    private Vector3 targetVelocity = Vector3.Zero;
+    public Vector3 targetVelocity { get; set; } = Vector3.Zero;
 
 
     [Signal]
@@ -98,6 +120,7 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
                 }
                 this.Rotate(delta);
             }
+            
             if (!this.targetCharacterBody.IsOnFloor() && !(this.humanState is JumpingState))
             {
                 if (!this.floorRayCast.IsColliding())
@@ -111,7 +134,7 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
                     this.targetCharacterBody.Velocity = newVelocity;
                 }
             }
-            if (!this.navigationComponent.isNavigationActive)
+            if (!this.navigationComponent.isNavigationActive || !this.humanState.CanMove)
             {
                 this.targetCharacterBody.MoveAndSlide();
             }
@@ -120,10 +143,13 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
 
     private void NewVelocityAvailableCallback(Vector3 newVelocity)
     {
-        if (this.navigationComponent.isNavigationActive)
+        if (!this.isDead)
         {
-            this.targetCharacterBody.Velocity = newVelocity;
-            this.targetCharacterBody.MoveAndSlide();
+            if (this.navigationComponent.isNavigationActive && this.humanState.CanMove)
+            {
+                this.targetCharacterBody.Velocity = newVelocity;
+                this.targetCharacterBody.MoveAndSlide();
+            }
         }
     }
 
@@ -145,9 +171,17 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
         this.targetVelocity = velocityVector;        
     }
 
-    private void Rotate(double delta)
+    public void Rotate(double delta, Vector3? targetRotationVelocity=null)
     {
-        Vector3 newVelocity = this.targetCharacterBody.Velocity;
+        Vector3 newVelocity;
+        if (targetRotationVelocity == null)
+        {
+            newVelocity = this.targetCharacterBody.Velocity;
+        }
+        else
+        {
+            newVelocity = (Vector3) targetRotationVelocity;
+        }
         if (newVelocity.X != 0 | newVelocity.Z != 0)
         {
             Vector3 newRotation = this.targetCharacterBody.Rotation;
@@ -158,9 +192,9 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
         }
     }
 
-    private void Move()
+    public void Move()
     {
-        this.targetCharacterBody.Velocity = this.targetCharacterBody.Velocity.MoveToward(this.targetVelocity, 0.25f);
+        this.targetCharacterBody.Velocity = this.targetCharacterBody.Velocity.MoveToward(this.targetVelocity, this.movementSpeed * 0.05f);
     }
 
     private void HandleJumpInput(JumpAction jumpAction)
@@ -170,7 +204,8 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
 
     private void HandleAttackInput(AttackAction attackAction)
     {
-        this.humanState = new AttackingState(2, 1, this, attackAction);
+        this.humanState = new AttackingState(this.weaponSystem.EquipedWeapon.AttackDuration, 
+                                            this.weaponSystem.EquipedWeapon.AttackTime, this, attackAction);
     }
 
     public void StartSpeak()
@@ -207,6 +242,11 @@ public partial class HumanCharacter : Node3D, SpeakerInterface, DamageableInterf
     public Attack ApplyDamageModifiersToAttack(Attack attack)
     {
         return attack;
+    }
+
+    public void EmitAttackPerformedSignal()
+    {
+        EmitSignal(SignalName.AttackPerformed);
     }
 
 }

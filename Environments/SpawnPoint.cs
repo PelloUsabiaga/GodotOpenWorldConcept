@@ -36,5 +36,9 @@ public partial class SpawnPoint : Node3D
                 GD.Print("Dequeued!");
             }
         }
+        foreach (Node3D node3D in this.nodeQueueToSpawn)
+        {
+            node3D.GlobalPosition = Vector3.Down*1000;
+        }
     }
 }

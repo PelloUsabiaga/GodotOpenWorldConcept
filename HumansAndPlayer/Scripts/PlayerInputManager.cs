@@ -52,7 +52,7 @@ public partial class PlayerInputManager : Node
                     DamageComponent clickedDamageComponent = null;
                     try
                     {
-                        clickedDamageComponent = ((AttackableColliderInterface) collidedElements["collider"].AsGodotObject()).GetDamageComponent();
+                        clickedDamageComponent = ((IAttackable) collidedElements["collider"].AsGodotObject()).GetDamageComponent();
                         isAttackable = true;
                         this.playerCharacter.humanCharacter.HandleInput(new AttackAction(clickedDamageComponent));
 

@@ -28,11 +28,14 @@ public partial class NavigationComponent : Node3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (this.isNavigationActive)
+        if (!this.humanCharacter.isDead)
         {
-            Vector3 nextPathPosition = this.navigationAgent.GetNextPathPosition();
-            Vector3 newVelocity = this.GlobalPosition.DirectionTo(nextPathPosition) * this.humanCharacter.movementSpeed;
-            this.navigationAgent.Velocity = newVelocity;
+            if (this.isNavigationActive)
+            {
+                Vector3 nextPathPosition = this.navigationAgent.GetNextPathPosition();
+                Vector3 newVelocity = this.GlobalPosition.DirectionTo(nextPathPosition) * this.humanCharacter.movementSpeed;
+                this.navigationAgent.Velocity = newVelocity;
+            }
         }
     }
 
@@ -49,7 +52,7 @@ public partial class NavigationComponent : Node3D
     {
         if (this.isNavigationActive)
         {
-            Vector3 newVelocity = this.humanCharacter.targetCharacterBody.Velocity.MoveToward(safeVelocity, 0.25f);
+            Vector3 newVelocity = this.humanCharacter.targetCharacterBody.Velocity.MoveToward(safeVelocity, this.humanCharacter.movementSpeed * 0.05f);
             
             EmitSignal(SignalName.NewVelocityAvailable, newVelocity);
         }

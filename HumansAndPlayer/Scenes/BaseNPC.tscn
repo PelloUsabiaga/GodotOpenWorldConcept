@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://bslyryy6pk76d"]
+
+[ext_resource type="Script" path="res://HumansAndPlayer/Scripts/BaseNPC.cs" id="1_5lytp"]
+[ext_resource type="PackedScene" uid="uid://kwad7xescd70" path="res://HumansAndPlayer/Scenes/HumanCharacter.tscn" id="2_0koem"]
+[ext_resource type="PackedScene" uid="uid://bpwc2gwvie0ha" path="res://HumansAndPlayer/Scenes/SpeakSystem/SpeakComponent.tscn" id="3_ky50x"]
+[ext_resource type="PackedScene" uid="uid://nm1wyxcnm3nm" path="res://HumansAndPlayer/Scenes/LocalHumanAISystem/LocalHumanAI.tscn" id="4_0t0g8"]
+[ext_resource type="PackedScene" uid="uid://j8pbm7o74ifp" path="res://HumansAndPlayer/Scenes/HumanCharacterAnimator.tscn" id="5_gg6vl"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rhd1g"]
+height = 2.20859
+
+[node name="BaseNPC" type="CharacterBody3D"]
+collision_layer = 5
+collision_mask = 5
+script = ExtResource("1_5lytp")
+
+[node name="HumanCharacter" parent="." node_paths=PackedStringArray("targetCharacterBody", "collisionObject3D") instance=ExtResource("2_0koem")]
+targetCharacterBody = NodePath("..")
+collisionObject3D = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_rhd1g")
+
+[node name="SpeakComponent" parent="." node_paths=PackedStringArray("speakerInterfaceNode") instance=ExtResource("3_ky50x")]
+speakerInterfaceNode = NodePath("../HumanCharacter")
+
+[node name="LocalHumanAI" parent="." node_paths=PackedStringArray("targetHumanCharacter") instance=ExtResource("4_0t0g8")]
+targetHumanCharacter = NodePath("../HumanCharacter")
+
+[node name="HumanCharacterAnimator" parent="." node_paths=PackedStringArray("humanCharacter") instance=ExtResource("5_gg6vl")]
+humanCharacter = NodePath("../HumanCharacter")
+selectedMeshName = "PeasantPlaceholder"

@@ -8,7 +8,7 @@ public partial class WalkingAroundInGroupMasterAIState : WalkingAroundAIState
 {
     public Node3D masterNode3D;
     public List<WalkingAroundInGroupSlaveAIState> slaveAIStates = new List<WalkingAroundInGroupSlaveAIState>();
-    public WalkingAroundInGroupMasterAIState(Vector3 centralPosition, float distanceOrder, LocalHumanAI localHumanAI, List<WalkingAroundInGroupSlaveAIState> slaveAIStatesToInheritage=null) : base(centralPosition, distanceOrder, localHumanAI)
+    public WalkingAroundInGroupMasterAIState(Vector3 centralPosition, float distanceOrder, LocalHumanAI localHumanAI, List<WalkingAroundInGroupSlaveAIState> slaveAIStatesToInheritage=null) : base(centralPosition, localHumanAI, distanceOrder)
     {
         this.masterNode3D = localHumanAI;
         if (slaveAIStatesToInheritage != null)

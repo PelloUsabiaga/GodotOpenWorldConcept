@@ -56,6 +56,7 @@ public partial class PlayerSpeakComponent : Node3D
         this.humanCharacter.SpeakEnded += this.EndConversation;
 
         this.detectionArea.AreaEntered += this.SpeakComponentEntered;
+        this.detectionArea.AreaExited += this.SpeakComponentExited;
 
         this.speakButtonScene = GD.Load<PackedScene>("res://HumansAndPlayer/Scenes/SpeakSystem/SpeakButton.tscn");
         this.speakComponentToButton = new Godot.Collections.Dictionary<SpeakComponent, Button>();
@@ -73,17 +74,25 @@ public partial class PlayerSpeakComponent : Node3D
     private void DrawSpeakButtons(Godot.Collections.Array<SpeakComponent> speakComponentsInRangue)
     {
         float screenCenterX = GetViewport().GetVisibleRect().Size.X / 2;
+        GD.Print(this.speakComponentToButton);
+        // foreach (GodotObject godotObject in this.speakComponentToButton.Keys)
+        // {
+        //     if (!IsInstanceValid(godotObject))
+        //     {
+        //         GD.Print("Something wrong!");
+        //     }
+        // } 
 
-        List<SpeakComponent> speakComponents = new List<SpeakComponent>(this.speakComponentToButton.Keys);
-        for (int i = 0; i < speakComponents.Count; i++)
+        // List<SpeakComponent> speakComponents = new List<SpeakComponent>(this.speakComponentToButton.Keys);
+        for (int i = 0; i < speakComponentsInRangue.Count; i++)
         {
-            SpeakComponent speakComponent = speakComponents[i];
-            if (!speakComponentsInRangue.Contains(speakComponent))
-            {
-                this.speakComponentToButton[speakComponent].QueueFree();
-                this.speakComponentToButton.Remove(speakComponent);
-            }
-            else if (speakComponent.IsInsideTree())
+            SpeakComponent speakComponent = speakComponentsInRangue[i];
+            // if (!speakComponentsInRangue.Contains(speakComponent))
+            // {
+            //     this.speakComponentToButton[speakComponent].QueueFree();
+            //     this.speakComponentToButton.Remove(speakComponent);
+            // }
+            if (speakComponent.IsInsideTree())
             {
                 Button speakButton = this.speakComponentToButton[speakComponent];
                 Vector2 speakComponentPositionOnScreen = this.playerCamera3D.camera3D.UnprojectPosition(speakComponent.GlobalPosition);
@@ -168,6 +177,13 @@ public partial class PlayerSpeakComponent : Node3D
         this.speakComponentToButton.Add(speakComponent, speakButton);
         this.uiControl.AddChild(speakButton);
         speakButton.ButtonDown += () => this.SpeakButtonClicked(speakComponent);
+    }
+
+    private void SpeakComponentExited(Area3D area)
+    {
+        SpeakComponent speakComponent = (SpeakComponent) area;
+        this.speakComponentToButton[speakComponent].QueueFree();
+        this.speakComponentToButton.Remove(speakComponent);
     }
 
     public Godot.Collections.Array<SpeakComponent> GetSpeakComponentsInRangue()

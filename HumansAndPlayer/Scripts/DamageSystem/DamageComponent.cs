@@ -9,7 +9,7 @@ public partial class DamageComponent : Node3D
     public Node damageableInterfaceNode;
 
     public event AttackReceivedCsEventHandler attackReceived;
-    private DamageableInterface damageableInterface;
+    private IDamageable damageableInterface;
     
     private int _health;
     public int health 
@@ -29,7 +29,7 @@ public partial class DamageComponent : Node3D
     public override void _Ready()
     {
         base._Ready();
-        this.damageableInterface = (DamageableInterface) this.damageableInterfaceNode;
+        this.damageableInterface = (IDamageable) this.damageableInterfaceNode;
         this.health = this.maxHealth;
     }
 

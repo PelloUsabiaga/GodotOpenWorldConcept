@@ -64,15 +64,9 @@ environment = SubResource("Environment_vc76i")
 [node name="SpawnPointsFolder" type="Node" parent="."]
 
 [node name="SpawnPoint" parent="SpawnPointsFolder" instance=ExtResource("2_d5op2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.97696, 0, -1.39145)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1619, 0, 2.68192)
 name = "a"
 
 [node name="SpawnPoint2" parent="SpawnPointsFolder" instance=ExtResource("2_d5op2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.52438, 0, -16.5342)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2305, 0, -19.4251)
 name = "b"
-
-[node name="SpawnPoint3" parent="SpawnPointsFolder" instance=ExtResource("2_d5op2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.59481, 0, 1.52993)
-name = "c"
-
-[node name="SpawnPointsFolder" type="Node3D" parent="SpawnPointsFolder"]

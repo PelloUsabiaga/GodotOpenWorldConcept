@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://bauyumgemhnd"]
+
+[ext_resource type="Script" path="res://HumansAndPlayer/Scripts/WeaponSystem/WeaponsVisual/SimpleShotVisual.cs" id="1_lvq5m"]
+[ext_resource type="PackedScene" uid="uid://wgo670s16qrr" path="res://HumansAndPlayer/Scripts/BloodGPUParticles.tscn" id="2_ra811"]
+[ext_resource type="Shader" uid="uid://c4ajqio1l4227" path="res://HumansAndPlayer/Shaders/SmokeEfect.tres" id="3_wl21m"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_q0gio"]
+top_radius = 0.05
+bottom_radius = 0.07
+height = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uebdj"]
+render_priority = 0
+shader = ExtResource("3_wl21m")
+
+[sub_resource type="Curve" id="Curve_csixu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.70852, 0.752956), -0.946003, -0.946003, 0, 0, Vector2(1, 0.483849), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4jwho"]
+curve = SubResource("Curve_csixu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2n5ch"]
+spread = 15.239
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -1, 0)
+linear_accel_min = 2.0
+linear_accel_max = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_4jwho")
+color = Color(0.117647, 1, 0, 1)
+
+[node name="SimpleShotVisual" type="Node3D"]
+script = ExtResource("1_lvq5m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-5.21253e-16, -6.54202e-08, 1, -1, 1.78473e-08, 0, -1.19249e-08, -1.49664, -4.37114e-08, 0, 0.12591, -0.771106)
+mesh = SubResource("CylinderMesh_q0gio")
+
+[node name="SmokeEfect" parent="." instance=ExtResource("2_ra811")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.176778, -1.67711)
+material_override = SubResource("ShaderMaterial_uebdj")
+emitting = false
+one_shot = true
+speed_scale = 2.45
+explosiveness = 0.89
+process_material = SubResource("ParticleProcessMaterial_2n5ch")

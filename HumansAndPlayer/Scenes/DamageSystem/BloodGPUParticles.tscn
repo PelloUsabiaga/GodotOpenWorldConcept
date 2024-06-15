@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://wgo670s16qrr"]
+
+[ext_resource type="Shader" uid="uid://oloxf878vbvg" path="res://HumansAndPlayer/Shaders/blood_efect.tres" id="1_0gyoj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rod5e"]
+render_priority = 0
+shader = ExtResource("1_0gyoj")
+
+[sub_resource type="Curve" id="Curve_csixu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.70852, 0.752956), -0.946003, -0.946003, 0, 0, Vector2(1, 0.483849), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4jwho"]
+curve = SubResource("Curve_csixu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1uyao"]
+spread = 43.0
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -1, 0)
+linear_accel_min = 2.0
+linear_accel_max = 2.0
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_4jwho")
+
+[sub_resource type="QuadMesh" id="QuadMesh_go8hb"]
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.12636, 0)
+material_override = SubResource("ShaderMaterial_rod5e")
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_1uyao")
+draw_pass_1 = SubResource("QuadMesh_go8hb")

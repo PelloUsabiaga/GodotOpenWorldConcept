@@ -22,6 +22,8 @@ public partial class AttackingState : HumanState
         this.makeAttackAtTime = makeAttackAtTime;
         this.humanCharacter = humanCharacter;
         this.attackAction = attackAction;
+
+        this.CanMove = this.humanCharacter.weaponSystem.EquipedWeapon.CanMoveWileAttack;
     }
 
     public override bool CanMove { get; protected set; } = true; 
@@ -38,11 +40,21 @@ public partial class AttackingState : HumanState
 
     public override HumanState Update(double delta, HumanCharacter humanCharacter)
     {
+        if (!this.CanMove)
+        {
+            this.humanCharacter.targetVelocity = Vector3.Zero;
+            this.humanCharacter.Move();
+        }
+        if (IsInstanceValid(this.attackAction.targetDamageComponent))
+        {
+            this.humanCharacter.Rotate(delta, this.attackAction.targetDamageComponent.GlobalPosition - this.humanCharacter.GlobalPosition);
+        }
         this.attackingTime += delta;
         if (this.attackingTime > this.makeAttackAtTime && !this.attackMade)
         {
             this.attackMade = true;
             this.humanCharacter.weaponSystem.TryAttackToDamageComponent(this.attackAction.targetDamageComponent);
+            this.humanCharacter.EmitAttackPerformedSignal();
         }
         if (this.attackingTime > this.attackTime)
         {
